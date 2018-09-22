@@ -1,4 +1,5 @@
 import React from 'react'
 import {render} from 'react-dom'
+import Landing from './pages/Landing'
 
-render(<h1>It works!</h1>, document.getElementById('app'))
+render(<Landing />, document.getElementById('app'))
