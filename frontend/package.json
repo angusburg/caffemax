@@ -1,0 +1,14 @@
+{
+  "name": "caffemax-frontend",
+  "version": "0.0.1",
+  "description": "Frontend SPA for Caffemax",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "parcel-bundler": "^1.9.7"
+  },
+  "scripts": {
+    "start": "parcel index.html"
+  }
+}
