@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+#Connect to Redshift Database
 con=psycopg2.connect(dbname= 'dev', host='caffemax-db.cnkm2vec4v38.us-east-1.redshift.amazonaws.com',
 port= '5439', user= 'awsuser', password= 'Awsuser2')
 
@@ -46,7 +47,7 @@ USERS_PATH = '/users'
 
 USER_PATH = '/user'
 
-#User operations
+#Get all users PATH: /api/users
 @app.route(BASE_PATH + USERS_PATH, methods=['GET'])
 def get_users():
     cursor.execute("select * from client;")
@@ -54,6 +55,7 @@ def get_users():
     con.commit()
     return jsonify({'users': users})
 
+#Get a single user PATH: /api/user?username=''
 @app.route(BASE_PATH + USER_PATH, methods=['GET'])
 def get_user():
     username = request.args.get('username', type = str).lower()
@@ -61,10 +63,11 @@ def get_user():
     cursor.execute("select * from client where username = %s;", (username,))
 
     user = cursor.fetchone()
-    if len(user) == 0:
+    if user is None:
         raise InvalidUsage('User not found', status_code=400)
     return jsonify({'user': user})
 
+#Create a user PATH: /api/user
 @app.route(BASE_PATH + USER_PATH, methods=['POST'])
 def create_user():
     if not request.json:
@@ -88,6 +91,8 @@ def create_user():
 
     return jsonify({'user': 'User created'}), 201
 
+#update a users settings PATH: /api/local_settings
+#Have to update both settings
 @app.route(BASE_PATH + '/settings', methods=['PUT'])
 def update_settings():
     if not request.json:
@@ -103,7 +108,7 @@ def update_settings():
 
 INTAKE_PATH = '/intake'
 
-#intake operations
+#get all intakes for a user PATH: /api/intake?userId=1
 @app.route(BASE_PATH + INTAKE_PATH, methods=['GET'])
 def get_intakes():
     userId = request.args.get('userId', type = int)
@@ -118,6 +123,7 @@ def get_intakes():
 
     return jsonify({'intakes': intakes})
 
+#create an intake for a user PATH: /api/intake
 @app.route(BASE_PATH + INTAKE_PATH, methods=['POST'])
 def post_intake():
     if not request.json:
@@ -132,7 +138,7 @@ def post_intake():
 
 DRINKS_PATH = '/drinks'
 
-#Drink operations
+#Get all drinks PATH: /api/drinks
 @app.route(BASE_PATH + DRINKS_PATH, methods=['GET'])
 def get_drinks():
     cursor.execute("select * from drink")
@@ -141,6 +147,7 @@ def get_drinks():
 
     return jsonify({'drinks': drinks})
 
+#Add a drink to the database PATH: /api/drinks
 @app.route(BASE_PATH + DRINKS_PATH, methods=['POST'])
 def create_drinks():
     if not request.json:
@@ -154,14 +161,20 @@ def create_drinks():
 
     return jsonify({'drink': 'drink created'}), 201
 
+
+#Get a users total daily caffeine intakes
+#Needs to be fixed to use a single user
 @app.route(BASE_PATH + '/totaldaycaffeine', methods=['GET'])
 def total_day_caffeine():
-    cursor.execute("SELECT SUM(drink.caffeine) FROM intake JOIN drink ON drink=drink.id WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(seconds = 86400), datetime.now(), ))
+    userId = request.args.get('userId', type = int)
+
+    cursor.execute("SELECT SUM(drink.caffeine) FROM intake JOIN drink ON drink=drink.id WHERE userId = %s timestamp BETWEEN %s AND %s", (userId, atetime.now() - timedelta(seconds = 86400), datetime.now(), ))
 
     total = cursor.fetchone()
 
     return jsonify({'caffeine': total})
 
+#check if a user should drink another cup of coffee
 @app.route(BASE_PATH + '/should_drink', methods=['GET'])
 def should_drink():
     username = request.args.get('username', type = str).lower()
@@ -172,7 +185,7 @@ def should_drink():
     if len(user) == 0:
         raise InvalidUsage('User not found', status_code=400)
 
-    cursor.execute("SELECT * FROM intake WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(hours = user[5]), datetime.now(), ))
+    cursor.execute("SELECT * FROM intake WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(minutes = user[5]), datetime.now(), ))
 
     return jsonify({'should_drink': cursor.fetchall()})
 
@@ -182,6 +195,7 @@ def should_drink():
         return jsonify({'should_drink': 'False'})
 
 
+#Handle errors that occur in all endpoints
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
