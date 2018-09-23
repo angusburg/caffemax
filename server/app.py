@@ -187,8 +187,6 @@ def should_drink():
 
     cursor.execute("SELECT * FROM intake WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(minutes = user[5]), datetime.now(), ))
 
-    return jsonify({'should_drink': cursor.fetchall()})
-
     if cursor.rowcount == 0:
         return jsonify({'should_drink': 'True'})
     else:
