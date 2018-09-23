@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, abort, make_response, request
+from flask_cors import CORS
 from InvalidUsage import InvalidUsage
 import psycopg2
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 con=psycopg2.connect(dbname= 'dev', host='caffemax-db.cnkm2vec4v38.us-east-1.redshift.amazonaws.com',
 port= '5439', user= 'awsuser', password= 'Awsuser2')
