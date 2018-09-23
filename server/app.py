@@ -3,6 +3,7 @@ from flask_cors import CORS
 from InvalidUsage import InvalidUsage
 import psycopg2
 from datetime import datetime, timedelta
+import os
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -201,3 +202,7 @@ def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
