@@ -63,7 +63,7 @@ def get_user():
     cursor.execute("select * from client where username = %s;", (username,))
 
     user = cursor.fetchone()
-    if len(user) == 0:
+    if user is None:
         raise InvalidUsage('User not found', status_code=400)
     return jsonify({'user': user})
 
@@ -166,7 +166,9 @@ def create_drinks():
 #Needs to be fixed to use a single user
 @app.route(BASE_PATH + '/totaldaycaffeine', methods=['GET'])
 def total_day_caffeine():
-    cursor.execute("SELECT SUM(drink.caffeine) FROM intake JOIN drink ON drink=drink.id WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(seconds = 86400), datetime.now(), ))
+    userId = request.args.get('userId', type = int)
+
+    cursor.execute("SELECT SUM(drink.caffeine) FROM intake JOIN drink ON drink=drink.id WHERE userId = %s timestamp BETWEEN %s AND %s", (userId, atetime.now() - timedelta(seconds = 86400), datetime.now(), ))
 
     total = cursor.fetchone()
 
