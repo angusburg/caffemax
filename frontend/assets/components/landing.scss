@@ -1,0 +1,45 @@
+@import '../variables';
+
+.component__landing {
+  height: 100vh;
+  position: relative;
+
+  > .container > .copy {
+    padding: $interaction-size 0;
+
+    > .copy-image {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
+
+.component__hero {
+  align-items: center;
+  background: url('./bg.jpg');
+  background-size: cover;
+  display: flex;
+  height: 80%;
+  min-height: 600px;
+  width: 100%;
+
+  > .content {
+    text-align: center;
+    margin: 0 auto;
+
+
+    > h1 {
+      margin-left: $spacing;
+      font-size: 120px;
+    }
+  }
+}
+
+.component__landing_cta {
+  display: inline-block;
+  margin-right: $spacing;
+}
+
+h2 {
+  text-decoration: underline;
+}

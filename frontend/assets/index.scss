@@ -1,38 +1,37 @@
+@import 'variables';
+
+@import 'global/normalize';
+@import 'global/skeleton';
+
+@import 'global/animate';
+@import 'global/buttons';
+@import 'global/form';
+@import 'global/links';
+@import 'global/spacing';
+@import 'global/shapes';
+@import 'global/typography';
+
+@import 'components/header';
+@import 'components/landing';
+@import 'components/page';
+
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
-  background-color: #efefef;
+  color: $print-color;
+  height: 100%;
+  margin: 0;
+  font-weight: $font-weight-black;
 }
 
-@font-face {
-  font-family: 'Bodoni';
-  src: url('./bodoni.ttf');
+#app {
+  height: 100% !important;
 }
 
-.branding {
-  display: flex;
-  width: 100%;
-  
-  > h1 {
-    font-family: 'Bodoni', 'Times New Roman', Times, serif;
-    margin: 0 auto;
-  }
-}
-
-.landing_cta {
-  display: block;
-
-  > .button {
-    background: #fff;
-    border: 0;
-    border-radius: 0.5em;
-    color: #000;
-    font-size: 1em;
-    font-weight: 700;
-    padding: 0.5em;
-    text-decoration: none;
-    margin-right: 0.3em;
-  }
+hr {
+  margin: 3rem 0;
+  border-top: 1px dashed $muted-color;
 }
