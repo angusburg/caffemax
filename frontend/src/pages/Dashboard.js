@@ -1,12 +1,13 @@
 import React from 'react'
 import {view} from 'react-easy-state'
-import {Box, Hero, Header, Paragraph, Screen} from 'remiges'
 import store from '~/src/store'
 
 const Dashboard = () => (
-  <Screen>
-    <Header>Welcome back, {store.firstName}</Header>
-  </Screen>
+  <div className="component__page">
+    <div className="container">
+      <h1>Welcome back, {store.firstName}</h1>
+    </div>
+  </div>
 )
 
 export default view(Dashboard)
