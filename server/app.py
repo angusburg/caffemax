@@ -193,6 +193,26 @@ def should_drink():
         return jsonify({'should_drink': 'False'})
 
 
+@app.route(BASE_PATH + '/caffeine_in_bloodstream', methods=['GET'])
+def caffeine_in_bloodstream():
+    username = request.ags.get('username', type = str).lower()
+
+    cursor.execute("select * from intake where timestamp between %s and %s"), (datetime.now(), datetime.now() - timedelta(days=1))
+    
+    caffeine_in_blood = 0
+    cursorList = cursor.fetchall()
+    
+    for row in cursorList
+        #get caffeine from drink table where the id is from the previous querry's 3rd index
+        drinkCursor.execute("SELECT caffeine from drink where id = %s"), row[3]
+        initial_caffeine = drinkCursor.fetchall()
+        half_life = 18000
+        consumption_time = row[1]
+        current_time = datetime.seconds
+        caffeine_in_blood += initial_caffeine * (1/2) ** (half_life / consumption_time - current_time)
+
+    return jsonify({'caffeine_in_bloodstream': '%s' caffeine_in_blood})
+
 #Handle errors that occur in all endpoints
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
