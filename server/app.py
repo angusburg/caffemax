@@ -185,7 +185,7 @@ def should_drink():
     if len(user) == 0:
         raise InvalidUsage('User not found', status_code=400)
 
-    cursor.execute("SELECT * FROM intake WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(hours = user[5]), datetime.now(), ))
+    cursor.execute("SELECT * FROM intake WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(minutes = user[5]), datetime.now(), ))
 
     return jsonify({'should_drink': cursor.fetchall()})
 
