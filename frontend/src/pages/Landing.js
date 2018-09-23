@@ -1,7 +1,7 @@
 import React from 'react'
-import Page from '../components/Page'
-
+import {Box, Hero, Header, Paragraph, Screen} from 'remiges'
 import User from '../storage/User'
+import Background from '~/assets/bg.jpg'
 
 export default class Landing extends React.Component {
   constructor() {
@@ -24,12 +24,24 @@ export default class Landing extends React.Component {
     const {name} = this.state
 
     return (
-      <Page>
-        <h1>Caffemax</h1>
-        <span>Perfect caffeine consumption.</span>
-        <h1>Welcome back {name}</h1>
-        <input type="text" onChange={this.handleUsernameChange} value={name} />
-      </Page>
+      <Screen>
+        <Hero
+          background={`url(${Background}) no-repeat center`}
+          backgroundSize="cover"
+          height="90vh"
+        >
+          <div>
+            <Header>Caffemax</Header>
+            <Paragraph>Perfect caffeine consumption</Paragraph>
+            <div className="landing_cta">
+              <button className="button">Get Started</button>
+            </div>
+          </div>
+        </Hero>
+        <Box height="10vh">
+          <Box verticallyCenter />
+        </Box>
+      </Screen>
     )
   }
 }
