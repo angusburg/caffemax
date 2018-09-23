@@ -12,9 +12,13 @@ class Register extends React.Component {
       loginUsername: '',
       registerUsername: '',
       registerPassword: '',
+      firstName: '',
+      sleepTime: 0,
+      timeBetween: 0,
     }
 
     this.submitLogin = this.submitLogin.bind(this)
+    this.submitRegister = this.submitRegister.bind(this)
   }
 
   async submitLogin() {
@@ -36,9 +40,47 @@ class Register extends React.Component {
       history.push('/me')
     }
   }
+  async submitRegister() {
+    const {
+      registerPassword,
+      registerUsername,
+      sleepTime,
+      firstName,
+      timeBetween,
+    } = this.state
+    const {history} = this.props
+    fetch(`http://localhost:5000/api/user`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify({
+        username: registerUsername,
+        password: registerPassword,
+        time_between: sleepTime,
+        sleep_time: timeBetween,
+        firstName,
+        lastName: ' name',
+      }),
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        user.set('username', registerUsername)
+        store.username = registerUsername
+        history.push('/me')
+      })
+  }
 
   render() {
-    const {registerUsername, registerPassword, loginUsername} = this.state
+    const {
+      registerUsername,
+      registerPassword,
+      loginUsername,
+      firstName,
+      timeBetween,
+      sleepTime,
+    } = this.state
 
     return (
       <div className="component__page">
@@ -63,6 +105,35 @@ class Register extends React.Component {
                     this.setState({registerPassword: event.target.value})
                   }
                 />
+                <label>Preferred Name</label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={event =>
+                    this.setState({firstName: event.target.value})
+                  }
+                />
+                <label>Sleep Time (hrs): </label>
+                <input
+                  type="number"
+                  value={sleepTime}
+                  onChange={event =>
+                    this.setState({sleepTime: event.target.value})
+                  }
+                />
+                <label>Time Between Drinks (hrs): </label>
+                <input
+                  type="number"
+                  value={timeBetween}
+                  onChange={event =>
+                    this.setState({timeBetween: event.target.value})
+                  }
+                />
+                <br />
+
+                <button className="btn" onClick={this.submitRegister}>
+                  Register
+                </button>
               </div>
             </div>
             <div className="six columns">

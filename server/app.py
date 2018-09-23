@@ -75,8 +75,8 @@ def create_user():
 
     username = request.json['username'].lower()
     password = request.json['password'].lower()
-    firstName = request.json['firstName'].lower()
-    lastName = request.json['lastName'].lower()
+    firstName = request.json['firstName']
+    lastName = request.json['lastName']
     sleep_time = request.json['sleep_time']
     time_between = request.json['time_between']
 
