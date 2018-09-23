@@ -5,4 +5,12 @@
   min-height: 100vh;
   padding: $interaction-size * 1.5 + $spacing $spacing $spacing $spacing;
   overflow-x: scroll;
+
+  > img.java {
+    position: fixed;
+    bottom: 5em;
+    right: 5em;
+    width: 15%;
+    height: auto;
+  }
 }

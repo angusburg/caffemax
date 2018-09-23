@@ -17,6 +17,7 @@ class App extends React.Component {
       )
         .then(res => res.status && res.json())
         .then(json => {
+          store.userId = json.user[0]
           store.firstName = json.user[2]
           store.lastName = json.user[3]
           store.sleepTime = json.user[5]

@@ -182,17 +182,17 @@ def should_drink():
     cursor.execute("select * from client where username = %s;", (username,))
 
     user = cursor.fetchone()
-    if len(user) == 0:
+    if user is None:
         raise InvalidUsage('User not found', status_code=400)
 
     cursor.execute("SELECT * FROM intake WHERE timestamp BETWEEN %s AND %s", (datetime.now() - timedelta(minutes = user[5]), datetime.now(), ))
 
-    return jsonify({'should_drink': cursor.fetchall()})
+    # return jsonify({'should_drink': cursor.fetchall()})
 
     if cursor.rowcount == 0:
-        return jsonify({'should_drink': 'True'})
+        return jsonify({'should_drink': True})
     else:
-        return jsonify({'should_drink': 'False'})
+        return jsonify({'should_drink': False})
 
 
 #Handle errors that occur in all endpoints
